@@ -2,12 +2,31 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Star, Clock } from "lucide-react";
+import { Star } from "lucide-react";
 import { UsersTitle } from "@/lib/definitions";
 
 interface MovieCardProps {
   title: UsersTitle;
 }
+
+// Custom Clock Icon component that shows hands when filled
+const ClockIcon = ({ filled, size = 32 }: { filled: boolean; size?: number }) => {
+  if (filled) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" fill="white"/>
+        <path d="M12 6V12L16 14" stroke="#1a1f2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    );
+  }
+  
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2"/>
+      <path d="M12 6V12L16 14" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+};
 
 export function MovieCard({ title }: MovieCardProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -67,12 +86,7 @@ export function MovieCard({ title }: MovieCardProps) {
               onClick={handleWatchLater}
               className="bg-transparent p-2 rounded-full transition-all hover:scale-110"
             >
-              <Clock
-                size={32}
-                className="text-white"
-                fill={title.watchLater ? "white" : "none"}
-                strokeWidth={2}
-              />
+              <ClockIcon filled={title.watchLater} size={32} />
             </button>
           </div>
 

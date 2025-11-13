@@ -23,18 +23,25 @@ export default async function FavoritesPage({
   const page = Number(params.page) || 1;
 
   const favorites = await fetchFavorites(page, session.user.email);
+  const hasMore = favorites.length === 6;
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-green-400">Favorites</h1>
+      <h1 className="text-3xl font-bold text-white">Favorites</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {favorites.map((title) => (
-          <MovieCard key={title.id} title={title} />
-        ))}
-      </div>
-      
-      <Pagination currentPage={page} />
+      {favorites.length === 0 ? (
+        <p className="text-gray-400 text-center py-12">No favorites yet. Start adding some movies!</p>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {favorites.map((title) => (
+              <MovieCard key={title.id} title={title} />
+            ))}
+          </div>
+          
+          <Pagination currentPage={page} hasMore={hasMore} />
+        </>
+      )}
     </div>
   );
 }

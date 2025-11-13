@@ -1,5 +1,6 @@
 import { signOut } from "@/auth";
 import Image from "next/image";
+import { LogOut } from "lucide-react";
 
 interface HeaderProps {
   user: {
@@ -11,7 +12,7 @@ interface HeaderProps {
 
 export function Header({ user }: HeaderProps) {
   return (
-    <header style={{ backgroundColor: 'hsl(240, 100%, 19%)' }} className="px-6 py-4 flex justify-between items-center border-b-2 border-[hsl(168,76%,47%)]">
+    <header className="bg-[#54f4d0] px-6 py-4 flex justify-between items-center">
       <div className="flex items-center space-x-4">
         <Image
           src="/logo.png"
@@ -20,11 +21,11 @@ export function Header({ user }: HeaderProps) {
           height={40}
           className="rounded"
         />
-        <h1 className="text-xl font-bold text-white">Cinema Guru</h1>
+        <h1 className="text-xl font-bold text-black">Cinema Guru</h1>
       </div>
       
       <div className="flex items-center space-x-4">
-        <span className="text-white">{user.email || "User"}</span>
+        <span className="text-black font-medium">{user.email || "User"}</span>
         <form
           action={async () => {
             "use server";
@@ -33,9 +34,10 @@ export function Header({ user }: HeaderProps) {
         >
           <button
             type="submit"
-            className="bg-[hsl(168,76%,47%)] hover:bg-[hsl(168,76%,40%)] px-6 py-2 rounded-lg text-black font-semibold transition-colors"
+            className="bg-black hover:bg-gray-800 px-4 py-2 rounded-lg text-white font-semibold transition-colors flex items-center gap-2"
           >
-            Sign Out
+            <LogOut size={18} />
+            Logout
           </button>
         </form>
       </div>

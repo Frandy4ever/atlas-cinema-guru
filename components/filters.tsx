@@ -50,11 +50,10 @@ export function Filters() {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Search and Years Row */}
-      <div className="flex gap-4 items-end">
-        {/* Search */}
-        <div className="flex-1">
+    <div className="grid grid-cols-3 gap-6 mb-6">
+      {/* Left Section - Search */}
+      <div className="space-y-4">
+        <div>
           <label className="block text-sm font-medium text-white mb-2">
             Search
           </label>
@@ -67,38 +66,42 @@ export function Filters() {
           />
         </div>
 
-        {/* Min Year */}
-        <div className="w-48">
-          <label className="block text-sm font-medium text-white mb-2">
-            Min Year
-          </label>
-          <input
-            type="number"
-            placeholder="1990"
-            defaultValue={searchParams.get("minYear") || ""}
-            onChange={(e) => updateSearchParams({ minYear: e.target.value })}
-            className="w-full bg-[hsl(240,100%,19%)] border-2 border-[#1FD9C3] rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1FD9C3]"
-          />
-        </div>
+        {/* Min and Max Year side by side */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-white mb-2">
+              Min Year
+            </label>
+            <input
+              type="number"
+              placeholder="1990"
+              defaultValue={searchParams.get("minYear") || ""}
+              onChange={(e) => updateSearchParams({ minYear: e.target.value })}
+              className="w-full bg-[hsl(240,100%,19%)] border-2 border-[#1FD9C3] rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1FD9C3]"
+            />
+          </div>
 
-        {/* Max Year */}
-        <div className="w-48">
-          <label className="block text-sm font-medium text-white mb-2">
-            Max Year
-          </label>
-          <input
-            type="number"
-            placeholder="2024"
-            defaultValue={searchParams.get("maxYear") || ""}
-            onChange={(e) => updateSearchParams({ maxYear: e.target.value })}
-            className="w-full bg-[hsl(240,100%,19%)] border-2 border-[#1FD9C3] rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1FD9C3]"
-          />
+          <div>
+            <label className="block text-sm font-medium text-white mb-2">
+              Max Year
+            </label>
+            <input
+              type="number"
+              placeholder="2024"
+              defaultValue={searchParams.get("maxYear") || ""}
+              onChange={(e) => updateSearchParams({ maxYear: e.target.value })}
+              className="w-full bg-[hsl(240,100%,19%)] border-2 border-[#1FD9C3] rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1FD9C3]"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Genres Row */}
-      <div className="flex items-center gap-4">
-        <label className="text-sm font-medium text-white whitespace-nowrap">
+      {/* Middle Section - Empty */}
+      <div></div>
+
+      {/* Right Section - Genres */}
+      <div className="space-y-4">
+        <label className="block text-sm font-medium text-white">
           Genres
         </label>
         <div className="flex flex-wrap gap-2">
@@ -108,7 +111,7 @@ export function Filters() {
               <button
                 key={genre}
                 onClick={() => handleGenreToggle(genre)}
-                className={`px-6 py-2 rounded-full font-medium transition-colors border-2 ${
+                className={`px-5 py-2 rounded-full font-medium transition-colors border-2 text-sm ${
                   isSelected
                     ? "bg-[hsl(168,76%,47%)] text-black border-[hsl(168,76%,47%)]"
                     : "bg-transparent text-white border-[#1FD9C3] hover:bg-[hsl(168,76%,47%)] hover:text-black"

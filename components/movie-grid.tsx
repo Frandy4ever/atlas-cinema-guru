@@ -17,6 +17,9 @@ export async function MovieGrid({ page, query, minYear, maxYear, genres }: Movie
   if (!session?.user?.email) return null;
 
   const titles = await fetchTitles(page, minYear, maxYear, query, genres, session.user.email);
+  
+  // Check if there are more results by fetching one extra item
+  const hasMore = titles.length === 6; // If we got exactly 6, there might be more
 
   return (
     <div className="space-y-6">
@@ -26,7 +29,9 @@ export async function MovieGrid({ page, query, minYear, maxYear, genres }: Movie
         ))}
       </div>
       
-      <Pagination currentPage={page} />
+      {titles.length > 0 && (
+        <Pagination currentPage={page} hasMore={hasMore} />
+      )}
     </div>
   );
 }

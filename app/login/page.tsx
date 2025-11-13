@@ -1,6 +1,7 @@
 import { auth, signIn } from "@/auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { Github } from "lucide-react";
 
 export default async function LoginPage() {
   const session = await auth();
@@ -10,8 +11,8 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="bg-gray-100 p-8 rounded-lg shadow-lg max-w-md w-full">
         <div className="text-center mb-8">
           <Image
             src="/logo.png"
@@ -36,10 +37,27 @@ export default async function LoginPage() {
           className="space-y-4"
         >
           <button
-            type="submit"
-            className="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
+            className="
+              w-full
+              bg-transparent
+              border
+              border-slate-900
+              text-slate-900
+              font-semibold
+              py-3
+              px-4
+              rounded-lg
+              transition-colors
+              flex
+              items-center
+              justify-between
+              hover:bg-slate-900
+              hover:text-white
+            "
+
           >
             <span>Sign in with GitHub</span>
+            <Github className="w-5 h-5" />
           </button>
         </form>
       </div>

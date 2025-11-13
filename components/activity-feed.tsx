@@ -1,6 +1,5 @@
 import { fetchActivities } from "@/lib/data";
 import { auth } from "@/auth";
-import { Activity, Clock, Star } from "lucide-react";
 
 export async function ActivityFeed() {
   const session = await auth();
@@ -10,29 +9,28 @@ export async function ActivityFeed() {
   const activities = await fetchActivities(1, session.user.email);
 
   return (
-    <div className="text-white">
-      <h3 className="font-semibold mb-3 flex items-center space-x-2">
-        <Activity size={16} />
-        <span>Latest Activity</span>
-      </h3>
-      <div className="space-y-3 max-h-60 overflow-y-auto">
-        {activities.map((activity) => (
-          <div key={activity.id} className="text-sm">
-            <div className="flex items-center space-x-2 mb-1">
-              {activity.activity === "FAVORITED" ? (
-                <Star size={12} className="text-yellow-400" />
-              ) : (
-                <Clock size={12} className="text-blue-400" />
-              )}
-              <span className="text-gray-400 text-xs">
-                {new Date(activity.timestamp).toLocaleDateString()} {new Date(activity.timestamp).toLocaleTimeString()}
-              </span>
+    <div className="text-black">
+      <h3 className="font-bold text-2xl mb-4">Latest Activities</h3>
+      <div className="space-y-4">
+        {activities.map((activity) => {
+          const date = new Date(activity.timestamp);
+          const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}, ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
+          
+          return (
+            <div key={activity.id} className="text-base leading-relaxed">
+              <div className="mb-1">
+                {formattedDate}
+              </div>
+              <div>
+                {activity.activity === "FAVORITED" ? (
+                  <span>Favorited <strong>{activity.title}</strong></span>
+                ) : (
+                  <span>Added <strong>{activity.title}</strong> to watch later</span>
+                )}
+              </div>
             </div>
-            <p className="text-gray-300 truncate">
-              {activity.title} - {activity.activity === "FAVORITED" ? "Favorited" : "Added to Watch Later"}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -11,15 +11,16 @@ interface SearchParams {
 export default async function FavoritesPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
   const session = await auth();
+  const params = await searchParams;
 
   if (!session?.user?.email) {
     redirect("/login");
   }
 
-  const page = Number(searchParams.page) || 1;
+  const page = Number(params.page) || 1;
 
   const favorites = await fetchFavorites(page, session.user.email);
 

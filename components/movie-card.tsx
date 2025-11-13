@@ -12,7 +12,8 @@ interface MovieCardProps {
 export function MovieCard({ title }: MovieCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleFavorite = async () => {
+  const handleFavorite = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (title.favorited) {
       await fetch(`/api/favorites/${title.id}`, { method: "DELETE" });
     } else {
@@ -21,7 +22,8 @@ export function MovieCard({ title }: MovieCardProps) {
     window.location.reload();
   };
 
-  const handleWatchLater = async () => {
+  const handleWatchLater = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (title.watchLater) {
       await fetch(`/api/watch-later/${title.id}`, { method: "DELETE" });
     } else {
@@ -32,52 +34,61 @@ export function MovieCard({ title }: MovieCardProps) {
 
   return (
     <div
-      className="relative bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
+      className="relative rounded-3xl overflow-hidden cursor-pointer border-4 border-[hsl(168,76%,47%)]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{ aspectRatio: '1/1' }}
     >
-      <Image
-        src={title.image}
-        alt={title.title}
-        width={400}
-        height={400}
-        className="w-full h-96 object-cover"
-      />
+      <div className="relative w-full h-full">
+        <Image
+          src={title.image}
+          alt={title.title}
+          fill
+          className="object-cover"
+        />
+      </div>
       
       {isHovered && (
-        <div className="absolute inset-0 bg-black bg-opacity-90 p-4 flex flex-col justify-between">
-          <div>
-            <h3 className="text-xl font-bold text-white mb-2">{title.title}</h3>
-            <p className="text-gray-300 text-sm mb-2 line-clamp-3">
-              {title.synopsis}
-            </p>
-            <div className="text-gray-400 text-sm">
-              <p>Released: {title.released}</p>
-              <p>Genre: {title.genre}</p>
-            </div>
-          </div>
-          
-          <div className="flex space-x-4">
+        <>
+          {/* Action Icons - Top Right */}
+          <div className="absolute top-4 right-4 flex gap-3 z-20">
             <button
               onClick={handleFavorite}
-              className="flex items-center space-x-2 text-white hover:text-yellow-400 transition-colors"
+              className="bg-transparent p-2 rounded-full transition-all hover:scale-110"
             >
               <Star
-                size={24}
-                fill={title.favorited ? "currentColor" : "none"}
+                size={32}
+                className="text-white"
+                fill={title.favorited ? "white" : "none"}
+                strokeWidth={2}
               />
             </button>
             <button
               onClick={handleWatchLater}
-              className="flex items-center space-x-2 text-white hover:text-blue-400 transition-colors"
+              className="bg-transparent p-2 rounded-full transition-all hover:scale-110"
             >
               <Clock
-                size={24}
-                fill={title.watchLater ? "currentColor" : "none"}
+                size={32}
+                className="text-white"
+                fill={title.watchLater ? "white" : "none"}
+                strokeWidth={2}
               />
             </button>
           </div>
-        </div>
+
+          {/* Info Overlay - Bottom 50% */}
+          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[hsl(240,100%,12%)] via-[hsl(240,100%,12%)] to-transparent p-6 flex flex-col justify-end z-10">
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {title.title} ({title.released})
+            </h3>
+            <p className="text-gray-300 text-sm mb-3 line-clamp-2">
+              {title.synopsis}
+            </p>
+            <div className="inline-block self-start bg-[hsl(168,76%,47%)] text-black px-4 py-1.5 rounded-full font-semibold text-sm">
+              {title.genre}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

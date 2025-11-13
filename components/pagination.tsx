@@ -17,23 +17,25 @@ export function Pagination({ currentPage }: PaginationProps) {
   };
 
   return (
-    <div className="flex justify-center items-center space-x-4">
-      <button
-        onClick={() => navigate(currentPage - 1)}
-        disabled={currentPage <= 1}
-        className="bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed px-4 py-2 rounded-lg text-white transition-colors"
-      >
-        Previous
-      </button>
-      
-      <span className="text-gray-300">Page {currentPage}</span>
-      
-      <button
-        onClick={() => navigate(currentPage + 1)}
-        className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-white transition-colors"
-      >
-        Next
-      </button>
+    <div className="flex justify-center items-center">
+      <div className="flex rounded-full overflow-hidden">
+        <button
+          onClick={() => navigate(currentPage - 1)}
+          disabled={currentPage <= 1}
+          className="bg-[hsl(168,76%,47%)] hover:bg-[hsl(168,76%,40%)] disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 w-36 py-3 text-black font-semibold transition-colors"
+        >
+          Previous
+        </button>
+        
+        <div className="w-0.5 bg-[hsl(240,100%,12%)]"></div>
+        
+        <button
+          onClick={() => navigate(currentPage + 1)}
+          className="bg-[hsl(168,76%,47%)] hover:bg-[hsl(168,76%,40%)] w-36 py-3 text-black font-semibold transition-colors"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

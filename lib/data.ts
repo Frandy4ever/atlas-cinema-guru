@@ -32,14 +32,20 @@ export async function fetchTitles(
         .execute()
     ).map((row) => row.title_id);
 
-    //Fetch titles
-    const titles = await db
+    // Fetch titles - build query conditionally
+    let queryBuilder = db
       .selectFrom("titles")
       .selectAll("titles")
       .where("titles.released", ">=", minYear)
       .where("titles.released", "<=", maxYear)
-      .where("titles.title", "ilike", `%${query}%`)
-      .where("titles.genre", "in", genres)
+      .where("titles.title", "ilike", `%${query}%`);
+
+    // Only add genre filter if genres array has items
+    if (genres.length > 0) {
+      queryBuilder = queryBuilder.where("titles.genre", "in", genres);
+    }
+
+    const titles = await queryBuilder
       .orderBy("titles.title", "asc")
       .limit(6)
       .offset((page - 1) * 6)
@@ -47,8 +53,7 @@ export async function fetchTitles(
 
     return titles.map((row) => ({
       ...row,
-      // Fix the synposis -> synopsis mapping
-      synopsis: row.synopsis, // Map database field to type definition
+      synopsis: row.synopsis,
       favorited: favorites.includes(row.id),
       watchLater: watchLater.includes(row.id),
       image: `/images/${row.id}.webp`,
@@ -84,7 +89,7 @@ export async function fetchFavorites(page: number, userEmail: string) {
 
     return titles.map((row) => ({
       ...row,
-      synopsis: row.synopsis, // Fix mapping
+      synopsis: row.synopsis,
       favorited: true,
       watchLater: watchLater.includes(row.id),
       image: `/images/${row.id}.webp`,
@@ -163,7 +168,7 @@ export async function fetchWatchLaters(page: number, userEmail: string) {
 
     return titles.map((row) => ({
       ...row,
-      synopsis: row.synopsis, // Fix mapping
+      synopsis: row.synopsis,
       favorited: favorites.includes(row.id),
       watchLater: true,
       image: `/images/${row.id}.webp`,

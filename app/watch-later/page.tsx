@@ -34,7 +34,7 @@ export default async function WatchLaterPage({
         ))}
       </div>
       
-      <Pagination currentPage={page} />
+      <Pagination currentPage={page} hasMore={false} />
     </div>
   );
 }
